@@ -1,0 +1,61 @@
+*** Settings ***
+Library  SeleniumLibrary
+
+*** Test Cases ***
+TC_31
+    #Open CG Talent portal on browser
+    Open Browser    https://talent.capgemini.com/in     Edge
+    Maximize Browser Window
+
+    #verify that you are on Talent Portal
+    sleep    3s
+    ${popup}=   run keyword and return status    element should be visible    //*[@id="cookie_info"]     timeout=2
+    Run keyword if  ${popup}    click element   //*[@class="cookie_button"]//*[text()='Close']
+    sleep   3s
+    Title Should Be     India Intranet Homepage | Talent Capgemini
+
+    #search for WeSynergize
+    Scroll Element Into View    //*[@title="WeSynergize"]
+
+    #click on WeSynergize
+    Click Element   //*[@title="WeSynergize"]
+#    Input Text  //*[@name="loginfmt"]     nitesh-rajendra.dhas@capgemini.com
+#    Click Element   //*[@type="submit"]
+
+    #verify that you are on WeSynergize page
+    sleep   5s
+    Title Should Be     India Capabilities
+    Capture Page Screenshot
+    set selenium speed  2s
+
+    #scroll down to recent updates
+    Scroll Element Into View    //*[text()='Recent Updates']
+
+    #verify recent updates are visible
+    Element Should Be Visible   //*[text()='Recent Updates']
+    Capture Page Screenshot
+
+    #scroll down to key programes
+    Scroll Element Into View    //*[text()='Key Programs']
+
+    #verify key programes are visible
+    Element Should Be Visible   //*[text()='Key Programs']
+    Capture Page Screenshot
+
+    #click on my news
+    Click Element   //a[@aria-labelledby="sp-appbar-tooltiplabel-news"]
+
+    #count number of news present on page
+    sleep   3s
+    ${news}=    Get Element Count   (//a[@aria-hidden="true"])
+    log to console   ${news}
+
+    #capture scrrenshot of the page
+    Capture Page Screenshot
+
+     # Close Tab
+    Close Window
+
+    # Close Browser
+    Close Browser
+

@@ -1,0 +1,54 @@
+*** Settings ***
+Library  SeleniumLibrary
+
+*** Test Cases ***
+TC_02
+     #Open CG Talent portal on browser
+    Open Browser    https://talent.capgemini.com/in     Chrome
+
+    #verify that you are on Talent Portal
+    sleep    3s
+    ${popup}=   run keyword and return status    element should be visible    //*[@id="cookie_info"]     timeout=2
+    Run keyword if  ${popup}    click element   //*[@class="cookie_button"]//*[text()='Close']
+    Title Should Be     India Intranet Homepage | Talent Capgemini
+
+    #search for success factor
+    Scroll Element Into View    //*[@title="SuccessFactors"]
+
+    #click on success factor
+    Click Element   //*[@title="SuccessFactors"]
+    Switch Window   title=SuccessFactors: Home
+
+    #verify that you are on success factor page
+    Title Should Be     SuccessFactors: Home
+
+    #click on view organiztion chart
+    Click Element   //*[@aria-label="View Org Chart"]
+
+    #zoom to 150%
+    sleep   7s
+    Click Element   //*[@accessible-name="Zoom In"]
+    Click Element   //*[@accessible-name="Zoom In"]
+    Click Element   //*[@accessible-name="Zoom In"]
+    Click Element   //*[@accessible-name="Zoom In"]
+    Click Element   //*[@accessible-name="Zoom In"]
+
+    #click on show employee details
+    Click Element   //*[@accessible-name="Nitesh Dhas Show employee details"]
+
+    #verify its you
+    Capture Element Screenshot  //*[@class="SidePanel_root__xuxZj SidePanel_show__JQv25"]   profile.png
+
+    #Close Tab
+    Close Window
+
+    #Close Tab
+    Close Browser
+
+
+
+
+
+
+
+

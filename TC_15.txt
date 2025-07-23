@@ -1,0 +1,55 @@
+*** Settings ***
+Library  SeleniumLibrary
+
+*** Test Cases ***
+TC_15
+    #Open CG Talent portal on browser
+    Open Browser    https://talent.capgemini.com/in     Chrome
+
+    #verify that you are on Talent Portal
+    sleep    3s
+    ${popup}=   run keyword and return status    element should be visible    //*[@id="cookie_info"]     timeout=2
+    Run keyword if  ${popup}    click element   //*[@class="cookie_button"]//*[text()='Close']
+    sleep   3s
+    Title Should Be     India Intranet Homepage | Talent Capgemini
+
+    #search for India Continuous Assimilation Program (I-CAP)
+    Scroll Element Into View    //*[@title="India Continuous Assimilation Program"]
+
+    #click on India Continuous Assimilation Program (I-CAP)
+    Click Element   //*[@title="India Continuous Assimilation Program"]
+    Switch Window   title=India Continuous Assimilation Program (I-CAP) | Talent Capgemini
+
+    #verify that you are on India Continuous Assimilation Program (I-CAP) page
+    sleep  2s
+    Title Should Be     India Continuous Assimilation Program (I-CAP) | Talent Capgemini
+
+    #scroll down to videos section
+    Scroll Element Into View    //*[@title="Welcome to Capgemini Family"]
+
+    #count how many videos are there
+    ${videos_count}=    Get Element Count   //*[@type="video/mp4"]
+    log to console   ${videos_count}
+
+    #scroll to business units
+    Scroll Element Into View    //*[text()='Business Units (SBU/BU/GBLs)']
+
+    #count number of units presnt
+    ${units}=    Get Element Count   //ol//li
+    log to console   ${units}
+
+    #scroll to central teams
+    Scroll Element Into View    //*[text()='Central Teams (Functional Units)']
+
+    #count number of central teams
+    ${units2}=    Get Element Count   //ol//li
+    log to console   ${units2}
+
+    #go to home page
+    Click Element   //*[@alt="Talent logo"]
+
+    #Close Tab
+    Close Window
+
+    #Close Browser
+    Close Browser

@@ -1,0 +1,59 @@
+*** Settings ***
+Library  SeleniumLibrary
+
+*** Test Cases ***
+TC_17
+    #Open CG Talent portal on browser
+    Open Browser    https://talent.capgemini.com/in     Chrome
+
+    #verify that you are on Talent Portal
+    sleep    3s
+    ${popup}=   run keyword and return status    element should be visible    //*[@id="cookie_info"]     timeout=2
+    Run keyword if  ${popup}    click element   //*[@class="cookie_button"]//*[text()='Close']
+    sleep   3s
+    Title Should Be     India Intranet Homepage | Talent Capgemini
+
+    #search for MediAssist
+    Scroll Element Into View    //*[@title='Medi Assist']
+
+    #click on MediAssist
+    Click Element   //*[@title='Medi Assist']
+    Switch Window   url=https://portal.mediassist.in/Index_Capgemini.aspx
+
+    #verify that you are on MediAssist page
+    sleep  2s
+    Title Should Be     portal.mediassist.in
+    Capture Page Screenshot
+
+    #verify that you are logged in your account
+    Page Should Contain Element     (//*[@class="text-container"])[1]
+    Capture Element Screenshot      (//*[@class="text-container"])[1]        verify.png
+
+    #scroll down to Your health policy
+    Scroll Element Into View    (//*[@class="content-container absolute"])[1]
+
+    #capture screenshot of Your health policy
+    Capture Element Screenshot  (//*[@class="content-container absolute"])[1]          verify2.png
+
+    #scroll down to Hospitalization
+    Scroll Element Into View    (//*[@class="content-container absolute"])[2]
+
+    #capture screenshot of Hospitalization
+    Capture Element Screenshot     (//*[@class="content-container absolute"])[2]       verify3.png
+
+    #scroll down to Claims
+    Scroll Element Into View    (//*[@class="content-container absolute"])[3]
+
+    #capture screenshot of Claims
+    Capture Element Screenshot     (//*[@class="content-container absolute"])[3]       verify4.png
+
+    #go to home page
+    Click Element   //*[@class="logo-color"]
+
+    #Close Tab
+    Close Window
+
+    #Close Browser
+    Close Browser
+
+

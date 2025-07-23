@@ -1,0 +1,62 @@
+*** Settings ***
+Library  SeleniumLibrary
+
+*** Test Cases ***
+TC_08
+    #Open CG Talent portal on browser
+    Open Browser    https://talent.capgemini.com/in     Chrome
+
+    #verify that you are on Talent Portal
+    sleep    3s
+    ${popup}=   run keyword and return status    element should be visible    //*[@id="cookie_info"]     timeout=2
+    Run keyword if  ${popup}    click element   //*[@class="cookie_button"]//*[text()='Close']
+    Title Should Be     India Intranet Homepage | Talent Capgemini
+
+    #search for Replicon
+    Scroll Element Into View    //*[@title="Replicon"]
+
+    #click on Replicon
+    Click Element   //*[@title="Replicon"]
+    Switch Window   title=Replicon - Home
+
+    #verify that you are on Replicon page
+    Title Should Be     Replicon - Home
+
+    #go to my replicon for timesheet filling
+    sleep   2s
+    Click Element   (//*[@aria-label="My Replicon"])[1]
+
+    #select week
+    sleep   2s
+    Click Element   //*[@class="divDropdown timesheetPeriodSelect"]
+    sleep   2s
+    Select From List By Value   (//*[@aria-label="Month"])[2]       7
+    Click Element   //*[@aria-label="Timesheet Period From July 13, 2025"]
+
+    #select timesheet submitting code
+    sleep   2s
+    Scroll Element Into View     //*[@class="divDropdown multiLevelSelector selectorWithFavorites"]
+    Click Element   //*[@class="divDropdown multiLevelSelector selectorWithFavorites"]
+    sleep   2s
+    Click Element   //*[@data-level="0"]//*[text()='CFMG_Freshers_Bench_New - 101023513']
+    Click Element   //*[@data-level="1"]//*[text()='NBT - NBT']
+
+    #select place of work
+    Click Element   //*[@aria-label="Timeline 1 Place of Work  Combo box"]
+    Click Element   //*[text()='Office']
+
+    #verify that submit button is avialable
+    Element Should Be Visible   //*[@aria-label="Submit for Approval"]
+
+    #go to home page
+    Click Element   //*[@class="menuItemIconContainer overviewMenuItemIconContainer"]
+
+    #Close Tab
+    Close Window
+
+    #Close Browser
+    Close Browser
+
+
+
+

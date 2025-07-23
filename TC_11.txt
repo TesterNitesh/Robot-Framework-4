@@ -1,0 +1,62 @@
+*** Settings ***
+Library  SeleniumLibrary
+
+*** Test Cases ***
+TC_11
+    #Open CG Talent portal on browser
+    Open Browser    https://talent.capgemini.com/in     Edge
+
+    #verify that you are on Talent Portal
+    sleep    3s
+    ${popup}=   run keyword and return status    element should be visible    //*[@id="cookie_info"]     timeout=2
+    Run keyword if  ${popup}    click element   //*[@class="cookie_button"]//*[text()='Close']
+    Title Should Be     India Intranet Homepage | Talent Capgemini
+
+    #search for My learning
+    Scroll Element Into View    //*[@title="My Learning"]
+
+    #click on My learning
+    Click Element   //*[@title="My Learning"]
+    sleep   20s
+    Switch Window   url=https://capgemini.sumtotal.host/rcore/c/dash/learningfocus/iniitial?isDeepLink=1
+
+    #verify that you are on My learning page
+    sleep   20s
+    Title Should Be     Home - SumTotal
+    ${popup}=   run keyword and return status    element should be visible    (//*[@class="modal-dialog-box"])[1]     timeout=2
+    sleep   2s
+    Run keyword if  ${popup}    click element   (//*[@class="link-gray"])[1]
+
+    #search for resume learning
+    sleep   10s
+    Scroll Element Into View    //*[text()='Resume Learning']
+
+    #verify that resume learning are visible
+    Wait Until Page Contains Element     (//*[@class="grid-stack-item-content ui-draggable-handle"] )[5]
+    Capture Element Screenshot  (//*[@class="grid-stack-item-content ui-draggable-handle"] )[5]     verify.png
+
+    #count the number of courses present on resume learning
+    ${course_count}=    Get Element Count   //*[@class="slick-slide-wrapper"]
+    log to console   ${course_count}
+
+    #search for other links
+    Scroll Element Into View    //*[@id="514_64_0" and text()=' Other Links']
+
+    #verify other links are visible
+    Wait Until Page Contains Element     //*[@id="514_64_0" and text()=' Other Links']
+    Capture Element Screenshot  //*[@id="514_64_0" and text()=' Other Links']       verify2.png
+
+    #count number of links present
+    ${link_count}=    Get Element Count   //*[@target="_blank"]
+    log to console   ${link_count}
+
+    #go to home page
+    Click Element   (//*[@aria-label="Home"])[2]
+
+    #Close Tab
+    Close Window
+
+    #Close Browser
+    Close Browser
+
+

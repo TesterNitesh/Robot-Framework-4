@@ -1,0 +1,92 @@
+*** Settings ***
+Library  SeleniumLibrary
+
+*** Test Cases ***
+TC_09
+    #Open CG Talent portal on browser
+    Open Browser    https://talent.capgemini.com/in     Edge
+    Maximize Browser Window
+
+    #verify that you are on Talent Portal
+    sleep    3s
+    ${popup}=   run keyword and return status    element should be visible    //*[@id="cookie_info"]     timeout=2
+    Run keyword if  ${popup}    click element   //*[@class="cookie_button"]//*[text()='Close']
+    Title Should Be     India Intranet Homepage | Talent Capgemini
+
+    #search for Office Pass
+    Scroll Element Into View    //*[@title="OfficePass"]
+
+    #click on Office Pass
+    Click Element   //*[@title="OfficePass"]
+    Switch Window   title=OfficePass
+
+    #verify that you are on Office Pass page
+    Title Should Be     OfficePass
+    ${popup}=   run keyword and return status    element should be visible    (//*[@class="modal-dialog-box"])[1]     timeout=2
+    sleep   2s
+    Run keyword if  ${popup}    click element   (//*[@class="link-gray"])[1]
+#    Execute JavaScript    document.body.style.zoom="70%"
+
+
+    #select location
+    Click Element   (//*[@role="combobox"])[1]
+    Input Text  (//*[@role="combobox"])[1]     DTP
+    Click Element   //*[@class="ng-option-label ng-star-inserted" and text()='DTPA5 (Bangalore - India)']
+
+    #select floor
+    sleep   3s
+    Click Element   (//*[@class="ng-arrow-wrapper"])[3]
+    sleep   5s
+    Wait Until Element Is Visible    (//*[@class="ng-option-label ng-star-inserted"])[6]
+    Click Element   (//*[@class="ng-option-label ng-star-inserted"])[1]
+
+#    #select in time
+    Click Element   (//*[@class="ng-arrow-wrapper"])[4]
+    sleep   3s
+    Click Element   (//*[@class="ng-option-label ng-star-inserted"])[1]
+
+    #select out time
+    Click Element   (//*[@class="ng-arrow-wrapper"])[5]
+    sleep   3s
+    Click Element   (//*[@class="ng-option-label ng-star-inserted"])[13]
+
+    #select date
+#    Click Element   //*[@aria-label="Next month"]
+    Scroll Element Into View   (//*[@class="mat-calendar-body-cell-content mat-focus-indicator"])[10]
+    Click Element  (//*[@class="mat-calendar-body-cell-content mat-focus-indicator"])[10]
+
+    #click on select seat
+    sleep   5s
+    Scroll Element Into View   (//*[@class="btn btn-primary" and text()=' Select Seat '])[1]
+    Wait Until Element Is Enabled   (//*[@class="btn btn-primary" and text()=' Select Seat '])[1]
+    Click Element   (//*[@class="btn btn-primary" and text()=' Select Seat '])[1]
+
+    #click on book seat
+    sleep   15s
+    Click Element   //*[@class="btn btn-primary" and text()='Book Seat']
+
+    #verify that seat is booked
+    Capture Element Screenshot  //*[@id="mat-dialog-15"]    booking.png
+
+    #click on view booking
+    Click Element   (//*[@class="btn btn-outline-primary"])[4]
+
+    #click on delete booking
+    Click Element   (//*[@href="javascript:void(0)"])[7]
+
+    #delete the booked seat
+    Click Element   (//*[@class="btn btn-danger"])
+
+    #go to home page
+    Click Element   (//*[@class="cap-gemini"])
+
+    #Close Tab
+    Close Window
+
+    #Close Browser
+    Close Browser
+
+
+
+
+

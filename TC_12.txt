@@ -1,0 +1,51 @@
+*** Settings ***
+Library  SeleniumLibrary
+
+*** Test Cases ***
+TC_12
+    #Open CG Talent portal on browser
+    Open Browser    https://talent.capgemini.com/in     Edge
+
+    #verify that you are on Talent Portal
+    sleep    3s
+    ${popup}=   run keyword and return status    element should be visible    //*[@id="cookie_info"]     timeout=2
+    Run keyword if  ${popup}    click element   //*[@class="cookie_button"]//*[text()='Close']
+    Title Should Be     India Intranet Homepage | Talent Capgemini
+
+    #search for My learning
+    Scroll Element Into View    //*[@title="My Learning"]
+
+    #click on My learning
+    Click Element   //*[@title="My Learning"]
+    sleep   20s
+    Switch Window   url=https://capgemini.sumtotal.host/rcore/c/dash/learningfocus/iniitial?isDeepLink=1
+
+    #verify that you are on My learning page
+    Title Should Be     Home - SumTotal
+    ${popup}=   run keyword and return status    element should be visible    (//*[@class="modal-dialog-box"])[1]     timeout=2
+    sleep   2s
+    Run keyword if  ${popup}    click element   (//*[@class="link-gray"])[1]
+
+    #click on self
+    sleep   15s
+    Click Element  //*[@id="self_header"]
+
+    #click on learners dashboard
+    Click Element  //*[text()='Learner Dashboard']
+
+    #verify pending actions
+    sleep   15s
+    Wait Until Page Contains Element     //*[text()="My Pending Actions"]
+    Capture Element Screenshot  (//*[@class="grid-stack-item-content ui-draggable-handle"])[3]     verify.png
+
+    #go to home page
+    Click Element   (//*[@aria-label="Home"])[2]
+
+    #Close Tab
+    Close Window
+
+    #Close Browser
+    Close Browser
+
+
+

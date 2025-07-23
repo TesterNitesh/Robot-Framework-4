@@ -1,0 +1,66 @@
+*** Settings ***
+Library  SeleniumLibrary
+
+*** Test Cases ***
+TC_20
+    #Open CG Talent portal on browser
+    Open Browser    https://talent.capgemini.com/in     Chrome
+
+    #verify that you are on Talent Portal
+    sleep    3s
+    ${popup}=   run keyword and return status    element should be visible    //*[@id="cookie_info"]     timeout=2
+    Run keyword if  ${popup}    click element   //*[@class="cookie_button"]//*[text()='Close']
+    sleep   3s
+    Title Should Be     India Intranet Homepage | Talent Capgemini
+
+    #search for Serviece Central
+    Scroll Element Into View    //*[@title="http://help.capgemini.com"]
+
+    #click on Serviece Central
+    Click Element   //*[@title="http://help.capgemini.com"]
+    sleep   2s
+    Switch Window   url=https://servicecentral.capgemini.com/sc
+
+    #verify that you are on Serviece Central page
+    sleep  2s
+    Title Should Be     homepage - ServiceCentral
+    Capture Page Screenshot
+
+    #scroll down and check components present on page
+    Scroll Element Into View    (//*[@class="ng-scope container"])[2]
+    Capture Page Screenshot
+
+    #scroll to repoet an issue
+    Scroll Element Into View    //*[text()=' Report an Issue']
+
+    #click on report
+    Click Element   //*[text()='Report ']
+    sleep   3s
+
+    #select type of issue
+    Click Element   //*[@class="select2-choice select2-default form-control"]
+    Click Element   //*[@id="s2id_autogen2_search"]
+    Input Text  //*[@id="s2id_autogen2_search"]     Hardware
+    sleep   2s
+    Click Element   //*[text()='Hardware Issues']
+    sleep   5s
+    Click Element   (//*[@ng-repeat="button in options.buttons track by button.label"])[2]
+    Input Text  //*[@aria-label="Desk Number"]     11
+
+    #write short description
+    Input Text  //*[@aria-label="Short description"]     Issue: Experiencing a malfunction withlaptop affecting normal operation.Action Requested: Requesting technical assistance to diagnose and resolve the problem
+
+    #write full description
+    Input Text  //*[@placeholder="Enter a complete information"]     I am experiencing a hardware malfunction with my . The issue began from today, and it is affecting system performance, connectivity, display. I have attempted basic troubleshooting steps such as restarting and checking connections, but the problem persists. Kindly assist in diagnosing and resolving the issue at the earliest.
+
+    #verify all the content
+    Capture Page Screenshot
+
+    #go to home page
+    Click Element   //*[@title="ServiceNow"]
+
+    #Close Tab
+    Close Window
+
+    #Close Browser
+    Close Browser

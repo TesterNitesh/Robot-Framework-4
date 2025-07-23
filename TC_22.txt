@@ -1,0 +1,42 @@
+*** Settings ***
+Library  SeleniumLibrary
+
+*** Test Cases ***
+TC_22
+    #Open CG Talent portal on browser
+    Open Browser    https://talent.capgemini.com/in     Chrome
+
+    #verify that you are on Talent Portal
+    sleep    3s
+    ${popup}=   run keyword and return status    element should be visible    //*[@id="cookie_info"]     timeout=2
+    Run keyword if  ${popup}    click element   //*[@class="cookie_button"]//*[text()='Close']
+    sleep   3s
+    Title Should Be     India Intranet Homepage | Talent Capgemini
+
+    #search for Emergency Contact Details
+    Scroll Element Into View    //*[@title='Emergency Contact Details']
+
+    #click on Emergency Contact Details
+    Click Element   //*[@title='Emergency Contact Details']
+
+    #verify that you are on Emergency Contact Details page
+    sleep  2s
+    Title Should Be     Emergency Contact Details | Talent Capgemini
+    Capture Page Screenshot
+
+    #search for Capgemini Office numbers
+    Scroll Element Into View    (//*[@class="tplDivContent"])[1]
+
+    #write phone numbers to console
+    ${phone}=   Get Text    (//*[@class="tplDivContent"])[1]//p[4]
+    log to console      ${phone}
+
+    #go to home page
+    Click Element   //*[@alt="Talent logo"]
+
+    #Close Tab
+    Close Window
+
+    #Close Browser
+    Close Browser
+

@@ -1,0 +1,66 @@
+*** Settings ***
+Library  SeleniumLibrary
+
+*** Variables ***
+${EMPTY}
+
+*** Test Cases ***
+TC_33
+    #Open CG Talent portal on browser
+    Open Browser    https://talent.capgemini.com/in     Edge
+
+    #verify that you are on Talent Portal
+    sleep    3s
+    ${popup}=   run keyword and return status    element should be visible    //*[@id="cookie_info"]     timeout=2
+    Run keyword if  ${popup}    click element   //*[@class="cookie_button"]//*[text()='Close']
+    sleep   3s
+    Title Should Be     India Intranet Homepage | Talent Capgemini
+
+    #search for Egencia
+    Scroll Element Into View    //*[@title="Egencia"]
+
+    #click on Egencia
+    Click Element   //*[@title="Egencia"]
+    sleep   15s
+    Switch Window   title=Home | Egencia
+
+    #verify that you are on Egencia page
+    Title Should Be    Home | Egencia
+    Capture Page Screenshot
+
+    #select departure location
+    Input Text  (//*[@placeholder="Departure city, airport, location"])[1]      Delhi, India (DEL-Indira Gandhi Intl.)
+    sleep   3s
+    Click Element   (//*[@class="details"])[1]
+
+    #select arrival location
+    Input Text  (//*[@placeholder="Arrival city, airport, location"])[1]        ${EMPTY}
+
+    #select departure date
+    Click Element   (//*[@id="flight-departure-date"])[1]
+#    Click Element   (//*[@class="cal-day"])[21]
+
+    #select arrival date
+    Click Element   ${EMPTY}
+
+    #click on search button
+    Click Element   (//*[@id="flight-search-btn"])
+
+    #wait until error messge is visisble
+    Wait Until Element Is Visible   //*[text()='Arrival location is missing']
+    Wait Until Element Is Visible   //*[text()='Arrival date is missing']
+
+    #varify that error messege is visible
+    Page Should Contain Element     //*[text()='Arrival location is missing']
+    Page Should Contain Element     //*[text()='Arrival date is missing']
+
+    #cpature screenshot
+    Capture Element Screenshot  (//*[@class="col col-12 nested-grid"])[2]       verify.png
+
+    #Close Tab
+    Close Window
+
+    #Close Browser
+    Close Browser
+
+

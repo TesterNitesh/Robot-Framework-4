@@ -1,0 +1,59 @@
+*** Settings ***
+Library  SeleniumLibrary
+
+*** Test Cases ***
+TC_01
+    #Open CG Talent portal on browser
+    Open Browser    https://talent.capgemini.com/in     Chrome
+
+    #verify that you are on Talent Portal
+    sleep    3s
+    ${popup}=   run keyword and return status    element should be visible    //*[@id="cookie_info"]     timeout=2
+    Run keyword if  ${popup}    click element   //*[@class="cookie_button"]//*[text()='Close']
+    Title Should Be     India Intranet Homepage | Talent Capgemini
+
+    #search for success factor
+    Scroll Element Into View    //*[@title="SuccessFactors"]
+
+    #click on success factor
+    Click Element   //*[@title="SuccessFactors"]
+    Switch Window   title=SuccessFactors: Home
+
+    #verify that you are on success factor page
+    Title Should Be     SuccessFactors: Home
+
+    #click on view my profile
+    Click Element   //a[@aria-label="View My Profile"]
+
+    #check that information given is yours
+    sleep   5s
+    Wait Until Page Contains Element     //*[@id="__picker2-fullName"]
+    Capture Element Screenshot  //div[@data-sap-ui="__xmlview0--objectPage-OPHeaderContent"]        mytitle.png
+
+    #confirm your manager is rupali bhoyte
+    sleep   5s
+    Scroll Element Into View    //td[@class=" sapExtentUilibFormPatternBlockLine sapExtentUilibFormPatternLargeBlockMiddleLeft"]
+    Page Should Contain Element     //td[@class=" sapExtentUilibFormPatternBlockLine sapExtentUilibFormPatternLargeBlockMiddleLeft"]
+    Capture Element Screenshot  //td[@class=" sapExtentUilibFormPatternBlockLine sapExtentUilibFormPatternLargeBlockMiddleLeft"]        manager.png
+
+    #scroll down to Organization Information
+    Click Element   //span[@class="sapMITHTextContent" and text()='Employment Information']
+    Scroll Element Into View    //DIV[@data-sap-ui="__section0-__xmlview0--objectPage-2-__section1-__xmlview0--objectPage-2-0"]
+    sleep   5s
+
+    #write your postion and position number
+    ${Text1}=   Get Text    //*[@id="__label56"]
+    log to console      ${Text1}
+
+    #Close Tab
+    Close Browser
+
+
+
+
+
+
+
+
+
+

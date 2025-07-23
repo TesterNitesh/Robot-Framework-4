@@ -1,0 +1,65 @@
+*** Settings ***
+Library  SeleniumLibrary
+
+*** Test Cases ***
+TC_36
+    #Open CG Talent portal on browser
+    Open Browser    https://talent.capgemini.com/in     Edge
+
+    #verify that you are on Talent Portal
+    sleep    3s
+    ${popup}=   run keyword and return status    element should be visible    //*[@id="cookie_info"]     timeout=2
+    Run keyword if  ${popup}    click element   //*[@class="cookie_button"]//*[text()='Close']
+    sleep   3s
+    Title Should Be     India Intranet Homepage | Talent Capgemini
+
+    #search for Serviece Central
+    Scroll Element Into View    //*[@title="http://help.capgemini.com"]
+
+    #click on Serviece Central
+    Click Element   //*[@title="http://help.capgemini.com"]
+    sleep   5s
+    Switch Window   url=https://servicecentral.capgemini.com/sc
+
+    #verify that you are on Serviece Central page
+    sleep  2s
+    Title Should Be     homepage - ServiceCentral
+    Capture Page Screenshot
+
+    #click on order and request
+    Scroll Element Into View    (//*[text()="Order "])
+    Click Element   (//*[text()="Order "])
+
+    #click on hardware allocation
+    sleep   5s
+    Click Element   (//*[@class="panel-body block"])[1]
+    Execute JavaScript    document.body.style.zoom="70%"
+
+    #write empty description
+    sleep    5s
+    Input Text  (//*[@name="short_description"])[1]     ${EMPTY}
+
+    #click on submit
+    sleep   5s
+    Wait Until Element Is Visible    (//*[@id="submit-btn"])[2]
+    Click Element   (//*[@id="submit-btn"])[2]
+
+    #wait until error messge is visisble
+    Wait Until Element Is Visible   //*[@class="alert-msg ng-binding"]
+
+    #varify that error messege is visible
+    Page Should Contain Element     //*[@class="alert-msg ng-binding"]
+
+    #cpature screenshot
+    Capture Element Screenshot  //*[@ng-repeat="m in c.notifications"]       verify.png
+    Capture Page Screenshot
+
+    #Close Tab
+    Close Window
+
+    #Close Browser
+    Close Browser
+
+
+
+

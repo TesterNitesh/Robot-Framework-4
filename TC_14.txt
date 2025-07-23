@@ -1,0 +1,57 @@
+*** Settings ***
+Library  SeleniumLibrary
+
+*** Test Cases ***
+TC_14
+    #Open CG Talent portal on browser
+    Open Browser    https://talent.capgemini.com/in     Edge
+    Maximize Browser Window
+
+    #verify that you are on Talent Portal
+    sleep    3s
+    ${popup}=   run keyword and return status    element should be visible    //*[@id="cookie_info"]     timeout=2
+    Run keyword if  ${popup}    click element   //*[@class="cookie_button"]//*[text()='Close']
+    Title Should Be     India Intranet Homepage | Talent Capgemini
+
+    #search for Workzone
+    Scroll Element Into View    //*[@title="Workzone"]
+
+    #click on Workzone
+    Click Element   //*[@title="Workzone"]
+    sleep   10s
+#    Open Browser    https://cgit-btp-prd.workzonehr.cfapps.eu10.hana.ondemand.com/site#workzone-home&/home     Chrome
+    Switch Window   title=SAP Work Zone
+
+    #verify that you are on Workzone page
+    sleep   10s
+    Title Should Be     Home - Home
+
+    #scroll to see my action
+    Execute JavaScript    window.scrollTo(0, document.body.scrollHeight);
+    sleep   10s
+    Scroll Element Into View     //*[text()='My Actions']
+
+    #check if there any action present
+    Capture Element Screenshot  //*[@id="__container8"]     action.png
+
+    #click on knowledge base
+    Click Element   //*[@class="sapMLnkText" and text()='Knowledge Base']
+
+    #verify you are on knowledgr base page
+    Switch Window   title=SAP Work Zone
+    Page Should Contain Element     //*[@class="title kb-title"]
+
+    #check recommended section
+     Scroll Element Into View  //*[@class="recommended-section col-xl-24 col-lg-24 col-md-24 col-sm-24 col-24 border-box bg-sapUiWhite"]
+    Capture Page Screenshot
+
+    #go to home page
+    Click Element   //*[@id="top-nav-new-logo"]
+
+    #Close Tab
+    Close Window
+
+    #Close Browser
+    Close Browser
+
+

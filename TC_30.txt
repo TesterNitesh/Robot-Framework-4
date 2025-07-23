@@ -1,0 +1,65 @@
+*** Settings ***
+Library  SeleniumLibrary
+
+*** Test Cases ***
+TC_30
+    #Open CG Talent portal on browser
+    Open Browser    https://talent.capgemini.com/in     Edge
+
+    #verify that you are on Talent Portal
+    sleep    3s
+    ${popup}=   run keyword and return status    element should be visible    //*[@id="cookie_info"]     timeout=2
+    Run keyword if  ${popup}    click element   //*[@class="cookie_button"]//*[text()='Close']
+    sleep   3s
+    Title Should Be     India Intranet Homepage | Talent Capgemini
+
+    #search for MyHire
+    Scroll Element Into View    //*[@title="MyHire"]
+
+    #click on MyHire
+    Click Element   //*[@title="MyHire"]
+    sleep   15s
+    Switch Window   title=SuccessFactors: Home
+
+    #verify that you are on MyHire page
+    sleep   5s
+    Title Should Be     SuccessFactors: Home
+    Capture Page Screenshot
+    set selenium speed  2s
+
+    #click on view my profile
+    Click Element   //*[text()='View My Profile']
+
+    #verify its your profile
+    sleep   10S
+    Scroll Element Into View  (//*[@class="fullName"])[2]
+
+    #go to home
+    Open Browser    https://performancemanager5.successfactors.eu/sf/home     Edge
+#    Click Element   //*[@title="Logo image. Link to Home."]
+
+    #click on view reminders
+    Click Element   //*[@title="View Reminders"]
+    Capture Page Screenshot
+
+    #close view reminders
+    Click Element   //*[@data-help-id="savedForLaterCloseButton"]
+
+    #click on view favorites
+    Click Element   //*[@title="View Favorites"]
+    Capture Page Screenshot
+
+    #click on close
+    Click Element   //*[@data-testid="favoritesDialogCloseButton"]
+
+    #scroll down to organization updates
+    Scroll Element Into View    //*[text()='Organizational Updates']
+
+    #cpature screenshot
+    Capture Element Screenshot  //*[@id="ORGANIZATION_UPDATES-sectionLabel"']       verify.png
+
+     #Close Tab
+    Close Window
+
+    #Close Browser
+    Close Browser

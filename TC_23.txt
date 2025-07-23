@@ -1,0 +1,62 @@
+*** Settings ***
+Library  SeleniumLibrary
+
+*** Test Cases ***
+TC_23
+    #Open CG Talent portal on browser
+    Open Browser    https://talent.capgemini.com/in     Edge
+
+    #verify that you are on Talent Portal
+    sleep    3s
+    ${popup}=   run keyword and return status    element should be visible    //*[@id="cookie_info"]     timeout=2
+    Run keyword if  ${popup}    click element   //*[@class="cookie_button"]//*[text()='Close']
+    sleep   3s
+    Title Should Be     India Intranet Homepage | Talent Capgemini
+
+    #search for SkillPath
+    Scroll Element Into View    //*[@title="SkillPath"]
+
+    #click on SkillPath
+    Click Element   //*[@title="SkillPath"]
+    sleep   15s
+    Switch Window   url=https://capgemini.sharepoint.com/sites/SkillFramework/Pages/home.aspx
+#    Input Text  //*[@placeholder="Email, phone, or Skype"]  nitesh-rajendra.dhas@capgemini.com
+
+
+    #verify that you are on SkillPath page
+    sleep  2s
+    Title Should Be     SkillPath
+    Capture Page Screenshot
+
+    #scrol down to why skill path
+    Scroll Element Into View    //*[text()='Why SkillPath?']
+
+    #capture screenshot of SkillPath Can Help To
+    Capture Element Screenshot  //*[text()='Why SkillPath?']       skillpath.png
+
+    #scroll down to feedback form
+    Scroll Element Into View    //*[text()='Feedback Form']
+
+    #add coments to feedback section
+    Input Text  //*[@id="txtFeedbackComment"]   SkillPath empowers employees to fast-track their careers by learning new skills or deepening existing expertise through curated, role-specific content created by Capgemini experts. It helps map learning milestones, track progress, and connect with technology specialists via discussion forums, all while being supported by a learner-centric approach where the BU sponsors the learning cost. This initiative ensures that employees are better equipped to meet customer demands with the right skills at the right time.
+
+    #click on reset button
+    Click Element   //*[text()='RESET']
+
+    #scroll down to share now
+    Scroll Element Into View    //*[text()='Share Now']
+
+    #write email on email box
+    Input Text  //*[@placeholder="Email your colleague to join Skillpath"]      nitesh-rajendra.dhas@capgemini.com
+
+    #click on share button
+    Click Element   //*[@onclick="myFunction();"]
+
+     #go to home page
+    Click Element   //*[@class="navbar-brand js-scroll-trigger"]
+
+    #Close Tab
+    Close Window
+
+    #Close Browser
+    Close Browser

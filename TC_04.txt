@@ -1,0 +1,69 @@
+*** Settings ***
+Library  SeleniumLibrary
+
+*** Test Cases ***
+TC_07
+    #Open CG Talent portal on browser
+    Open Browser    https://talent.capgemini.com/in     Chrome
+
+    #verify that you are on Talent Portal
+    sleep    3s
+    ${popup}=   run keyword and return status    element should be visible    //*[@id="cookie_info"]     timeout=2
+    Run keyword if  ${popup}    click element   //*[@class="cookie_button"]//*[text()='Close']
+    Title Should Be     India Intranet Homepage | Talent Capgemini
+
+    #search for Replicon
+    Scroll Element Into View    //*[@title="Replicon"]
+
+    #click on Replicon
+    Click Element   //*[@title="Replicon"]
+    Switch Window   title=Replicon - Home
+
+    #verify that you are on Replicon page
+    Title Should Be     Replicon - Home
+
+    #scroll down to book timeoff button
+    sleep   5s
+    Scroll Element Into View    //*[@class="fakeButtonBase cardAddBooking"]
+
+    #click on book time off
+    Click Element   //*[@class="material-icons iconAddBooking"]
+
+    #select type of leave
+    sleep   2s
+    Click Element   //*[@class="select2-selection__arrow"]
+    sleep   2s
+    Click Element   //*[@class="select2-results__option" and text()='[IND] - Optional Holiday']
+
+    #select start date
+    sleep   2s
+    Click Element   //*[@id="startDate"]
+    sleep   2s
+    Select From List By Value   (//*[@aria-label="Month"])[1]  7
+    Select From List By Value   (//*[@aria-label="Year"])[1]  2025
+    Click Element   //*[@aria-label="July 11, 2025"]
+
+    #select end date
+    sleep   2s
+    Click Element   //*[@id="endDate"]
+    sleep   2s
+    Click Element   //*[@aria-label="July 22, 2025"]
+
+    #add comments
+    Input Text  //*[@placeholder="Comments (Optional)"]     I would like to avail leave on 11 july to 22 july 2025 as it is marked as an optional holiday.Kindly approve my request and update the leave records accordingly.
+
+    #click on cancle
+    Click Element   //*[@id="timeOffCancel"]
+
+    #GO back to Home Screen
+    Click Element   //*[@class="menuItemIconContainer overviewMenuItemIconContainer"]
+
+    #Close Tab
+    Close Window
+
+    #Close Browser
+    Close Browser
+
+
+
+

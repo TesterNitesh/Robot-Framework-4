@@ -1,0 +1,49 @@
+*** Settings ***
+Library  SeleniumLibrary
+
+*** Test Cases ***
+TC_06
+    #Open CG Talent portal on browser
+    Open Browser    https://talent.capgemini.com/in     Chrome
+
+    #verify that you are on Talent Portal
+    sleep    3s
+    ${popup}=   run keyword and return status    element should be visible    //*[@id="cookie_info"]     timeout=2
+    Run keyword if  ${popup}    click element   //*[@class="cookie_button"]//*[text()='Close']
+    Title Should Be     India Intranet Homepage | Talent Capgemini
+
+    #search for Payroll (HGS)
+    Scroll Element Into View    //*[@title="Payroll (HGS)"]
+
+    #click on Payroll (HGS)
+    Click Element   //*[@title="Payroll (HGS)"]
+    Switch Window   title=Dashboard
+
+    #vrify that its your profile
+    Page Should Contain Element     //*[@id="para_UserDetails_inner" and text()='NITESH RAJENDRA DHAS']
+
+    #click on my tax sheet
+    Click Element   (//*[@class="card-body custom-padding"])[3]
+
+    #zoom 100% and verify your name
+    Click Element
+
+    #click on download button
+    Click Element
+
+    #click on save
+    Click Element
+    
+    #verify that payslip is downloaded
+    Page Should Contain Element   
+    Capture Page Screenshot
+
+     #Close Tab
+    Close Window
+
+    #Close Browser
+    Close Browser
+
+
+
+

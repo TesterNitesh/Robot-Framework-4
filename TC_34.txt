@@ -1,0 +1,62 @@
+*** Settings ***
+Library  SeleniumLibrary
+
+*** Variables ***
+${EMPTY}
+
+*** Test Cases ***
+TC_34
+    #Open CG Talent portal on browser
+    Open Browser    https://talent.capgemini.com/in     Edge
+
+    #verify that you are on Talent Portal
+    sleep    3s
+    ${popup}=   run keyword and return status    element should be visible    //*[@id="cookie_info"]     timeout=2
+    Run keyword if  ${popup}    click element   //*[@class="cookie_button"]//*[text()='Close']
+    sleep   3s
+    Title Should Be     India Intranet Homepage | Talent Capgemini
+
+    #search for Egencia
+    Scroll Element Into View    //*[@title="Egencia"]
+
+    #click on Egencia
+    Click Element   //*[@title="Egencia"]
+    sleep   15s
+    Switch Window   title=Home | Egencia
+
+    #verify that you are on Egencia page
+    Title Should Be    Home | Egencia
+    Capture Page Screenshot
+
+    #clcik on hotels
+    Click Element   //*[@id="hotel-search-tab"]
+
+    #select  location
+#    Click Element   ${EMPTY}
+
+    #select check in date
+    Click Element   (//*[@id="hotel-check-in-date"])[1]
+    Click Element   (//*[@class="cal-day"])[21]
+
+    #select checkout date
+    sleep   2s
+    Click Element   (//*[@class="cal-day"])[24]
+
+    #click on search button
+    Click Element   (//*[@id="hotel-search-btn"])
+
+    #wait until error messge is visisble
+    Wait Until Element Is Visible   //*[text()='Location is missing']
+
+    #varify that error messege is visible
+    Page Should Contain Element     //*[text()='Location is missing']
+
+    #cpature screenshot
+    Capture Element Screenshot  (//*[@id="hotel-location-insert"])       verify.png
+
+    #Close Tab
+    Close Window
+
+    #Close Browser
+    Close Browser
+

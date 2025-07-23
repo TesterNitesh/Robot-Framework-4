@@ -1,0 +1,63 @@
+*** Settings ***
+Library  SeleniumLibrary
+
+*** Test Cases ***
+TC_26
+    #Open CG Talent portal on browser
+    Open Browser    https://talent.capgemini.com/in     Edge
+
+    #verify that you are on Talent Portal
+    sleep    3s
+    ${popup}=   run keyword and return status    element should be visible    //*[@id="cookie_info"]     timeout=2
+    Run keyword if  ${popup}    click element   //*[@class="cookie_button"]//*[text()='Close']
+    sleep   3s
+    Title Should Be     India Intranet Homepage | Talent Capgemini
+
+    #search for Webmail
+    Scroll Element Into View    //*[@title="Webmail (O365)"]
+
+    #click on Webmail
+    Click Element   //*[@title="Webmail (O365)"]
+    sleep   15s
+#    Open Browser    https://eu2.concursolutions.com/home     Chrome
+#    Switch Window   title=Sign in to your account
+#    Input Text  //*[@name="loginfmt"]   nitesh-rajendra.dhas@capgemini.com
+    Switch Window   url=https://outlook.office365.com/mail/
+
+    #verify that you are on Webmail page
+    Title Should Be     Mail - Dhas, Nitesh - Outlook
+    Capture Page Screenshot
+
+    #click on new mail
+    Click Element   (//*[@aria-label="New mail"])[2]
+    sleep   10s
+
+    #select To  person
+    Input Text  //*[@aria-label="To"]   nitesh-rajendra.dhas@capgemini.com
+
+    #select cc person
+    Input Text  //*[@aria-label="Cc"]   nitesh-rajendra.dhas@capgemini.com
+
+    #add subject
+    Input Text  //*[@placeholder="Add a subject"]   Test Email for System Check
+
+    #add content of your mail
+    Click Element   //*[@class="elementToProof"]
+    Input Text  //*[@class="elementToProof"]   Hi Tester,This is a test email to verify that everything is working correctly. Please confirm if you received it.
+
+    #click on discard mail
+    Click Element   //*[@title="Discard (Esc)"]
+
+    #click on ok
+    Click Element   //*[text()='OK']
+
+    #go to home page
+    Click Element   (//*[@title="Organizational Logo"])[1]
+
+    #Close Tab
+    Close Window
+
+    #Close Browser
+    Close Browser
+
+

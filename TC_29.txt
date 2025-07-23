@@ -1,0 +1,59 @@
+*** Settings ***
+Library  SeleniumLibrary
+
+*** Test Cases ***
+TC_28
+    #Open CG Talent portal on browser
+    Open Browser    https://talent.capgemini.com/in     Chrome
+
+    #verify that you are on Talent Portal
+    sleep    3s
+    ${popup}=   run keyword and return status    element should be visible    //*[@id="cookie_info"]     timeout=2
+    Run keyword if  ${popup}    click element   //*[@class="cookie_button"]//*[text()='Close']
+    sleep   3s
+    Title Should Be     India Intranet Homepage | Talent Capgemini
+
+    #search for Secure File Transfer Serviece
+    Scroll Element Into View    //*[@title="Secure File Transfer Service (SFT)"]
+
+    #click on Secure File Transfer Serviece
+    Click Element   //*[@title="Secure File Transfer Service (SFT)"]
+    sleep   15s
+    Switch Window   title=Secure FTS Capgemini - Login
+
+    #verify that you are on Secure File Transfer Serviece page
+    sleep   5s
+    Title Should Be     Secure FTS Capgemini - Login
+    Capture Page Screenshot
+    set selenium speed  2s
+    #login in your account
+    Input Text  //*[@id="username"]     nitesh-rajendra.dhas@capgemini.com
+    Click Element   //*[text()='Next']
+
+    #click on home
+    Click Element   (//*[text()='/ (Home)'])[1]
+    sleep   3s
+
+    #click on create new folder
+    Click Element   (//*[text()='New Folder'])[2]
+
+    #give name of folder
+    Sleep   5s
+    Input Text  (//*[@type="text"])[1]  Demo
+
+    #click on create new folder
+    Click Element   //*[text()='Create']
+    Sleep   3s
+
+    #click on folder u have created
+    Click Element   (//*[text()='Demo'])[1]
+
+    #click on refresh
+    Click Element   //*[text()='Refresh']
+
+    #Close Tab
+    Close Window
+
+    #Close Browser
+    Close Browser
+

@@ -1,0 +1,61 @@
+*** Settings ***
+Library  SeleniumLibrary
+
+*** Test Cases ***
+TC_03
+     #Open CG Talent portal on browser
+    Open Browser    https://talent.capgemini.com/in     Edge
+    Maximize Browser Window
+
+    #verify that you are on Talent Portal
+    sleep    3s
+    ${popup}=   run keyword and return status    element should be visible    //*[@id="cookie_info"]     timeout=2
+    Run keyword if  ${popup}    click element   //*[@class="cookie_button"]//*[text()='Close']
+    Title Should Be     India Intranet Homepage | Talent Capgemini
+
+    #search for success factor
+    Scroll Element Into View    //*[@title="SuccessFactors"]
+
+    #click on success factor
+    Click Element   //*[@title="SuccessFactors"]
+    Switch Window   title=SuccessFactors: Home
+
+    #verify that you are on success factor page
+    Title Should Be     SuccessFactors: Home
+
+    #click on manage my priorites
+    Click Element   //*[@aria-label="Manage My Priorities"]
+
+    #clcik on create priority
+    Click Element
+
+    #fill priority description
+    Input Text
+
+    #select visibility
+    Select From List By Index
+
+    #select category
+    Select From List By Label
+
+    #give weight of priority
+    Input Text                      20%
+
+    #select status
+    Select From List By Value
+
+    #capture screenshot of information filled
+    Capture Page Screenshot
+
+    #click on cancle
+    Click Element
+
+    #go to home page
+    Click Element
+
+    #Close Tab
+    Close Window
+
+    #Close Browser
+    Close Browser
+

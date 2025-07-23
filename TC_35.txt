@@ -1,0 +1,62 @@
+*** Settings ***
+Library  SeleniumLibrary
+
+*** Variables ***
+${EMPTY}
+
+*** Test Cases ***
+TC_35
+    #Open CG Talent portal on browser
+    Open Browser    https://talent.capgemini.com/in     Edge
+
+    #verify that you are on Talent Portal
+    sleep    3s
+    ${popup}=   run keyword and return status    element should be visible    //*[@id="cookie_info"]     timeout=2
+    Run keyword if  ${popup}    click element   //*[@class="cookie_button"]//*[text()='Close']
+    sleep   3s
+    Title Should Be     India Intranet Homepage | Talent Capgemini
+
+    #search for Online Brand store
+    Scroll Element Into View    //*[@title="Online Brand Store India"]
+
+    #click on Online Brand store
+    Click Element   //*[@title="Online Brand Store India"]
+    Switch Window     url=https://capgeminibrandstore.printstop.co.in/
+
+    #Write Empty Email Id
+    Input Text  //*[@name="email_signup"]     ${EMPTY}
+
+    #clcik on login
+    Click Element   //*[@name="btnlogin"]
+
+    #wait until error messge is visisble
+    Wait Until Element Is Visible   //*[text()='This field is required.']
+
+    #varify that error messege is visible
+    Page Should Contain Element     //*[text()='This field is required.']
+
+    #cpature screenshot
+    Capture Element Screenshot  //*[@id='corploginsignin']       verify.png
+
+    #Write Wrong Email Id
+    Input Text  //*[@name="email_signup"]     abc@xyz.com
+
+    #clcik on login
+    Click Element   //*[@name="btnlogin"]
+
+    #wait until error messge is visisble
+    Wait Until Element Is Visible   //*[text()='Invalid email ID']
+
+    #varify that error messege is visible
+    Page Should Contain Element     //*[text()='Invalid email ID']
+
+    #cpature screenshot
+    Capture Element Screenshot  //*[@id='corploginsignin']       verify.png
+
+    #Close Tab
+    Close Window
+
+    #Close Browser
+    Close Browser
+
+

@@ -1,0 +1,51 @@
+*** Settings ***
+Library  SeleniumLibrary
+
+*** Test Cases ***
+TC_16
+    #Open CG Talent portal on browser
+    Open Browser    https://talent.capgemini.com/in     Chrome
+
+    #verify that you are on Talent Portal
+    sleep    3s
+    ${popup}=   run keyword and return status    element should be visible    //*[@id="cookie_info"]     timeout=2
+    Run keyword if  ${popup}    click element   //*[@class="cookie_button"]//*[text()='Close']
+    sleep   3s
+    Title Should Be     India Intranet Homepage | Talent Capgemini
+
+    #search for WorkAbroad
+    Scroll Element Into View    //*[@title='WorkAbroad']
+
+    #click on WorkAbroad
+    Click Element   //*[@title='WorkAbroad']
+    Switch Window   url=https://wab-enterpriseprod.immidart.com/Dashboard
+
+    #verify that you are on WorkAbroad page
+    sleep  2s
+    Page Should Contain Element     //*[@alt="GetAbroad"]
+    Capture Page Screenshot
+
+    #search for pending actions
+    Scroll Element Into View    //*[text()='Pending Actions']
+
+    #check your pending actions
+    Capture Element Screenshot  (//*[@class="actionCenterCardSection"])[1]   verify.png
+
+    #scroll down to International work assignment requests
+    Scroll Element Into View    //*[text()='International work assignment requests']
+
+    #capture screenshot of International work assignment requests
+    Capture Element Screenshot  //*[@class="myrequestCardSection"]      verify2.png
+
+    #count the number of cards present on page
+    ${cards_count}=    Get Element Count   //*[@class="card supportCard cardOne"]
+    log to console   ${cards_count}
+
+    #go to home page
+    Click Element   //*[@alt="Capgemini"]
+
+    #Close Tab
+    Close Window
+
+    #Close Browser
+    Close Browser

@@ -1,0 +1,47 @@
+*** Settings ***
+Library  SeleniumLibrary
+
+*** Test Cases ***
+TC_18
+    #Open CG Talent portal on browser
+    Open Browser    https://talent.capgemini.com/in     Chrome
+
+    #verify that you are on Talent Portal
+    sleep    3s
+    ${popup}=   run keyword and return status    element should be visible    //*[@id="cookie_info"]     timeout=2
+    Run keyword if  ${popup}    click element   //*[@class="cookie_button"]//*[text()='Close']
+    sleep   3s
+    Title Should Be     India Intranet Homepage | Talent Capgemini
+
+    #search for Employee Assistance Programme (EAP)
+    Scroll Element Into View    //*[@title='Employee Assistance Program']
+
+    #click on Employee Assistance Programme (EAP)
+    Click Element   //*[@title='Employee Assistance Program']
+
+    #verify that you are on Employee Assistance Programme (EAP) page
+    sleep  2s
+    Title Should Be     Employee Assistance Programme (EAP) | Talent Capgemini
+    Capture Page Screenshot
+
+    #scroll down to bottom of page
+    execute javascript  window.scrollTo(0,document.body.scrollheight)
+
+    #capture screenshot of picture present on page
+    Scroll Element Into View    //*[@title="Employee Assistance program 2022"]
+    Capture Element Screenshot  //*[@title="Employee Assistance program 2022"]      pic2.png
+    Scroll Element Into View    //*[@title="Health, Safety & Environment Banner"]
+    Capture Element Screenshot  //*[@title="Health, Safety & Environment Banner"]       pic1.png
+
+    #capture screenshot of phone numbers present on page
+    Scroll Element Into View    //*[@class="front region sidebar_tools"]
+    Capture Element Screenshot  //*[@class="front region sidebar_tools"]       pic3.png
+
+    #go to home page
+    Click Element   //*[@alt="Talent logo"]
+
+    #Close Tab
+    Close Window
+
+    #Close Browser
+    Close Browser

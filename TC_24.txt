@@ -1,0 +1,66 @@
+*** Settings ***
+Library  SeleniumLibrary
+
+*** Test Cases ***
+TC_24
+    #Open CG Talent portal on browser
+    Open Browser    https://talent.capgemini.com/in     Chrome
+
+    #verify that you are on Talent Portal
+    sleep    3s
+    ${popup}=   run keyword and return status    element should be visible    //*[@id="cookie_info"]     timeout=2
+    Run keyword if  ${popup}    click element   //*[@class="cookie_button"]//*[text()='Close']
+    sleep   3s
+    Title Should Be     India Intranet Homepage | Talent Capgemini
+
+    #search for NEXT
+    Scroll Element Into View    //*[@title='NEXT']
+
+    #click on NEXT
+    Click Element   //*[@title='NEXT']
+    sleep   5s
+    Open Browser    https://degreed.com/explore/777451     Chrome
+#    Switch Window   url=https://degreed.com/explore/777451
+
+    #verify that you are on NEXT page
+    sleep  10s
+    Title Should Be     Log In | Degreed
+    Capture Page Screenshot
+
+    #Login to your account
+    Input Text  //*[@name="username"]   nitesh-rajendra.dhas@capgemini.com
+    Click Element   //*[text()=' Continue ']
+    sleep   3s
+    Click Element   //*[text()=' Continue with SSO ']
+
+    #Scroll down to corses
+    sleep   15s
+    Scroll Element Into View     (//*[@class="markdown par par--small break"])[1]
+    Capture Page Screenshot
+
+    #count the number of courses present on page
+    ${courses}=    Get Element Count   //*[@class="l_flex m-l_flex l_flex-column full-width"]
+    log to console   ${courses}
+
+    #click on hame page
+    Click Element   (//*[@href="https://degreed.com/dguserlywo2lr/home/overview"])[3]
+    Click Element   //*[text()='Overview' and @class="tw-grow ng-tns-c1881092758-1"]
+
+    #scroll down to learning time
+    sleep   5s
+    Scroll Element Into View    //*[text()=' Learning Time ']
+
+    #capture screenshot of learning time
+    Capture Element Screenshot  (//*[@class="tw-flex"])[1]       leartime.png
+
+    #go to home page
+    Click Element   (//*[text()='Home'])[1]
+
+    #Close Tab
+    Close Window
+
+    #Close Browser
+    Close Browser
+
+
+

@@ -1,0 +1,46 @@
+*** Settings ***
+Library  SeleniumLibrary
+
+*** Test Cases ***
+TC_28
+    #Open CG Talent portal on browser
+    Open Browser    https://talent.capgemini.com/in     Chrome
+
+    #verify that you are on Talent Portal
+    sleep    3s
+    ${popup}=   run keyword and return status    element should be visible    //*[@id="cookie_info"]     timeout=2
+    Run keyword if  ${popup}    click element   //*[@class="cookie_button"]//*[text()='Close']
+    sleep   3s
+    Title Should Be     India Intranet Homepage | Talent Capgemini
+
+    #search for Communication Builders
+    Scroll Element Into View    //*[@title="Communications Builders"]
+
+    #click on Communication Builders
+    Click Element   //*[@title="Communications Builders"]
+    sleep   15s
+    Switch Window   url=https://builders.capgemini.com/
+
+    #verify that you are on Communication Builders page
+    Title Should Be     Capgemini Builders
+    Capture Page Screenshot
+
+    #serch for messege of the day
+    Scroll Element Into View    //*[@name="welcome"]
+
+    #write down messege to console
+    ${messege}=   Get Text    //*[@name="welcome"]
+    log to console      ${messege}
+
+    #capture screenshot of NOTE present on page
+    Capture Element Screenshot  (//*[@name="welcome"]//*[@style="color:#696969;"])[1]       verify.png
+
+    #count number of links present on page
+    ${link}=   Get Element Count    (//a[@href])
+    log to console      ${link}
+
+    #Close Tab
+    Close Window
+
+    #Close Browser
+    Close Browser

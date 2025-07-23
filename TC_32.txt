@@ -1,0 +1,68 @@
+*** Settings ***
+Library  SeleniumLibrary
+
+*** Test Cases ***
+TC_32
+    #Open CG Talent portal on browser
+    Open Browser    https://talent.capgemini.com/in     Chrome
+
+    #verify that you are on Talent Portal
+    sleep    3s
+    ${popup}=   run keyword and return status    element should be visible    //*[@id="cookie_info"]     timeout=2
+    Run keyword if  ${popup}    click element   //*[@class="cookie_button"]//*[text()='Close']
+    sleep   3s
+    Title Should Be     India Intranet Homepage | Talent Capgemini
+
+    #search for Online Brand store
+    Scroll Element Into View    //*[@title="Online Brand Store India"]
+
+    #click on Online Brand store
+    Click Element   //*[@title="Online Brand Store India"]
+    sleep   5s
+    Open Browser    https://capgeminibrandstore.printstop.co.in/    Chrome
+#    Switch Browser      url=https://capgeminibrandstore.printstop.co.in/
+    Input Text  //*[@name="email_signup"]     nitesh-rajendra.dhas@capgemini.com
+    Click Element   //*[@name="btnlogin"]
+    sleep   30s
+    Input Text  //*[@id="password_signup"]  Ravan@987
+    Click Element   (//*[@id="Submit"])[1]
+
+    #verify that you are on Online Brand store page
+    sleep   5s
+    Title Should Be     PrintStop Corporate Solutions
+    Capture Page Screenshot
+    set selenium speed  2s
+
+    #scroll down to products
+    Scroll Element Into View   //*[@class="container products corporate-home"]
+
+    #click on second product that appears
+    Click Element   (//*[@class="zoom border-0"])[2]
+
+    #click on add to cart
+    Scroll Element Into View   //*[text()='Description']
+    Click Element   //*[@value="Add To Cart"]
+
+    #click on continue to checkbox
+    Click Element   //*[@id="ps_checkout"]
+
+    #click on continue
+    Scroll Element Into View    //*[text()='Add GSTIN']
+    Click Element   //*[@id="order_continue"]
+
+#    check delevery charges
+    Scroll Element Into View      //*[@class="shipping-details"]
+    Capture Element Screenshot  //*[@class="shipping-details"]      verify.png
+
+    #click on continue
+    Scroll Element Into View      //*[text()='Your Products']
+    Click Element   //*[@name="shipping_continue"]
+
+    #verify we are on payment page
+    Capture Page Screenshot
+
+    #Close Tab
+    Close Window
+
+    #Close Browser
+    Close Browser

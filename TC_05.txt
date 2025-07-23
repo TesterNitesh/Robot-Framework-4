@@ -1,0 +1,67 @@
+*** Settings ***
+Library    SeleniumLibrary
+
+*** Variables ***
+${SHADOW_HOST_XPATH}=    (//*[@class="w-100 user-chat mt-4 mt-sm-0 ms-lg-1"])[1]
+${GET_DOWNLOAD_BTN_JS}=    return arguments[0].shadowRoot.querySelector${selector};
+${selector}=   ("#download")
+#ARGUMENTS   ${ele}
+
+*** Test Cases ***
+TC_05
+    # Open CG Talent portal on browser
+    Open Browser    https://talent.capgemini.com/in     Edge
+
+    # Verify that you are on Talent Portal
+    Sleep    3s
+    ${popup}=   Run Keyword And Return Status    Element Should Be Visible    //*[@id="cookie_info"]    timeout=2
+    Run Keyword If  ${popup}    Click Element   //*[@class="cookie_button"]//*[text()='Close']
+    Title Should Be     India Intranet Homepage | Talent Capgemini
+
+    # Search for Payroll (HGS)
+    Scroll Element Into View    //*[@title="Payroll (HGS)"]
+
+    # Click on Payroll (HGS)
+    Click Element   //*[@title="Payroll (HGS)"]
+    Switch Window   title=Dashboard
+
+    # Verify that it's your profile
+    Sleep   5s
+    Page Should Contain Element     //*[@id="para_UserDetails_inner" and text()='NITESH RAJENDRA DHAS']
+
+    # Click on My Payslip
+    Click Element   (//*[@class="card-body custom-padding"])[2]
+#    set selenium speed  7s
+
+    # Select year
+    Click Element   //*[@id="ddlYear"]
+#    Select From List By Value   id=ddlYear  2025
+
+    # Select month
+    sleep   2s
+#    Select From List By Value   id=ddlMonth  JUN
+
+    # Click on Search button
+    Click Element   (//*[@class="btn btn-primary" and @value="Search"])[1]
+    Click Element   //*[text()='JUN 2025']
+    sleep   7s
+
+    # Click on Download button inside Shadow DOM
+    ${host}=    Get WebElement    xpath=${SHADOW_HOST_XPATH}
+#    ${ele}  Get WebElement  //*[@id="download"]
+    ${download_btn}=    Execute JavaScript    return arguments[0].shadowRoot.querySelector${selector};    ${host}
+    Execute JavaScript    arguments[0].click();    ${download_btn}
+
+
+#    ${ele}  Get WebElement  //cr-icon-button[@role="button" and @title="Download"]
+#    Execute Javascript  arguments[0].click();   ARGUMENTS   ${ele}
+
+    # Optional: Wait for download or verify
+    Sleep    3s
+    Capture Page Screenshot
+
+    # Close Tab
+    Close Window
+
+    # Close Browser
+    Close Browser

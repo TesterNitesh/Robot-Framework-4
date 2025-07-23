@@ -1,0 +1,68 @@
+*** Settings ***
+Library  SeleniumLibrary
+
+*** Test Cases ***
+TC_27
+    #Open CG Talent portal on browser
+    Open Browser    https://talent.capgemini.com/in     Edge
+
+    #verify that you are on Talent Portal
+    sleep    3s
+    ${popup}=   run keyword and return status    element should be visible    //*[@id="cookie_info"]     timeout=2
+    Run keyword if  ${popup}    click element   //*[@class="cookie_button"]//*[text()='Close']
+    sleep   3s
+    Title Should Be     India Intranet Homepage | Talent Capgemini
+
+    #search for Daily Connect
+    Scroll Element Into View    //*[@title="DAILY.connect"]
+
+    #click on Daily Connect
+    Click Element   //*[@title="DAILY.connect"]
+    sleep   15s
+    Switch Window   title=(7) Viva Engage - Feed
+#    Input Text  //*[@name="loginfmt"]   nitesh-rajendra.dhas@capgemini.com
+
+    #verify that you are on Daily Connect page
+    Title Should Be     (7) Viva Engage - Feed
+    Capture Page Screenshot
+
+    #clcik on your profile
+    Click Element   (//*[@aria-label="Dhas, Nitesh"])[1]
+    sleep   3s
+
+    #verify profile is yours
+    Page Should Contain Element     (//*[text()='Dhas, Nitesh'])[4]
+    Capture Page Screenshot
+
+    #scroll down to story line
+    Scroll Element Into View    (//*[text()='Storylines'])
+
+    #click on communities
+    Click Element   (//*[text()='Communities'])[1]
+
+    #capture screenshot of your communitites
+    sleep   2s
+    Capture Page Screenshot
+
+    #clcik on storylines
+    Click Element   (//*[text()='Storylines'])
+
+    #click on disscusiion
+    sleep   5s
+    Click Element   //*[text()='Share thoughts, ideas, or updates']
+
+    #write something to post on storyline section
+    sleep   5s
+    Input Text      //*[@aria-label="Share thoughts, ideas, or updates"]    At capgemini, we don’t just work , we grow, we inspire, and we lead with purpose every single day.
+    Capture Page Screenshot
+
+    #go to home page
+    Click Element   //*[text()='Engage']
+
+    #Close Tab
+    Close Window
+
+    #Close Browser
+    Close Browser
+
+

@@ -1,0 +1,62 @@
+*** Settings ***
+Library  SeleniumLibrary
+
+*** Test Cases ***
+TC_21
+    #Open CG Talent portal on browser
+    Open Browser    https://talent.capgemini.com/in     Chrome
+
+    #verify that you are on Talent Portal
+    sleep    3s
+    ${popup}=   run keyword and return status    element should be visible    //*[@id="cookie_info"]     timeout=2
+    Run keyword if  ${popup}    click element   //*[@class="cookie_button"]//*[text()='Close']
+    sleep   3s
+    Title Should Be     India Intranet Homepage | Talent Capgemini
+
+    #search for India Application Portal
+    Scroll Element Into View    //*[@title="India Application Portal"]
+
+    #click on India Application Portal
+    Click Element   //*[@title="India Application Portal"]
+    sleep   15s
+    Switch Window   url=https://indiaapps.in.capgemini.com/Aspxpages/Applications.aspx
+
+    #click on click here
+    sleep   10s
+    Click Element   //*[text()='click here.']
+
+    #verify that you are on India Application Portal page
+    sleep  2s
+    Title Should Be    India Application Portal
+    Capture Page Screenshot
+
+    #search for my details
+    Scroll Element Into View    //*[@title="My Details"]
+
+    #confirm that details are yours
+    Capture Element Screenshot  (//*[@class="PartStyle"])[1]    verify.png
+
+    #search my assignments
+    Scroll Element Into View    (//*[@title="My Assignments"])[1]
+
+    #verify my assignments visible
+    Page Should Contain Element     (//*[@class="PartStyle"])[2]
+
+    #write project code to console
+    ${project_code}=   Get Text    //*[@class="gridItemBorder"]//*[@title="IN03_Sogeti_Testing_Bench"]
+    log to console      ${project_code}
+
+    #scroll to holiday list
+    Scroll Element Into View    //*[@title="Holiday List"]
+
+    #capture screenshot of hoiliday list
+    Capture Element Screenshot  (//*[@class="table-border"])[4]    verify2.png
+
+    #go to home page
+    Click Element   //*[@id="lbHomeNew"]
+
+    #Close Tab
+    Close Window
+
+    #Close Browser
+    Close Browser

@@ -1,0 +1,50 @@
+*** Settings ***
+Library  SeleniumLibrary
+
+*** Test Cases ***
+TC_13
+    #Open CG Talent portal on browser
+    Open Browser    https://talent.capgemini.com/in     Chrome
+
+    #verify that you are on Talent Portal
+    sleep    3s
+    ${popup}=   run keyword and return status    element should be visible    //*[@id="cookie_info"]     timeout=2
+    Run keyword if  ${popup}    click element   //*[@class="cookie_button"]//*[text()='Close']
+    Title Should Be     India Intranet Homepage | Talent Capgemini
+
+    #search for PXcell India Transformation
+    Scroll Element Into View    //*[@title="PXcell India Transformation"]
+
+    #click on PXcell India Transformation
+    Click Element   //*[@title="PXcell India Transformation"]
+    sleep   2s
+    Switch Window   title=PXcell India Transformation | Talent Capgemini
+
+    #verify that you are on PXcell India Transformation page
+    Title Should Be     PXcell India Transformation | Talent Capgemini
+
+    #scroll down to bottom
+    Execute JavaScript  window.scrollTo(0, document.body.scrollHeight)
+    Capture Page Screenshot
+
+    #scroll to useful links
+    Scroll Element Into View    //*[@class="tplDivContent"]//*[text()='Useful Links']
+
+    #count how many links are present there
+    ${link_count}=    Get Element Count   //*[@target="_blank"]
+    log to console   ${link_count}
+
+    #take screenshot of pictures present on page
+    Scroll Element Into View    //*[@title="Talent Banner Updated_New"]
+    Capture Element Screenshot  //*[@title="Talent Banner Updated_New"]     pic.png
+
+    #go to home page
+    Click Element   //*[@id="top-nav-new-logo"]
+
+    #Close Tab
+    Close Window
+
+    #Close Browser
+    Close Browser
+
+

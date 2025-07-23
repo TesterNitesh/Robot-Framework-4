@@ -1,0 +1,79 @@
+*** Settings ***
+Library  SeleniumLibrary
+
+*** Test Cases ***
+TC_24
+    #Open CG Talent portal on browser
+    Open Browser    https://talent.capgemini.com/in     Chrome
+
+    #verify that you are on Talent Portal
+    sleep    3s
+    ${popup}=   run keyword and return status    element should be visible    //*[@id="cookie_info"]     timeout=2
+    Run keyword if  ${popup}    click element   //*[@class="cookie_button"]//*[text()='Close']
+    sleep   3s
+    Title Should Be     India Intranet Homepage | Talent Capgemini
+
+    #search for MyExpenses
+    Scroll Element Into View    //*[@title='MyExpenses']
+
+    #click on MyExpenses
+    Click Element   //*[@title='MyExpenses']
+    sleep   10s
+#    Open Browser    https://eu2.concursolutions.com/home     Chrome
+    Switch Window   url=https://eu2.concursolutions.com/home
+
+    #verify that you are on MyExpenses page
+    Title Should Be     Home
+    Capture Page Screenshot
+
+    #scroll down to Company Notes
+    Scroll Element Into View    //*[text()='Company Notes']
+
+    #verify Company Notes are visible
+    Page Should Contain Element     //*[text()='Company Notes']
+    Capture Element Screenshot  //*[text()='Company Notes']       verify.png
+
+    #scroll down to requests
+    Scroll Element Into View    //*[text()='Requests']
+
+    #click on create rquest
+    Click Element   //*[@aria-label="Create Request"]
+
+    #fill name
+    sleep   3s
+    Input Text  //*[@name="name"]   Nitesh
+
+    #select travel start date
+    Click Element       (//*[@aria-label="Calendar"])[1]
+    Click Element       (//*[@class="sapcnqr-calendar__day-text sapcnqr-calendar__day-number sapcnqr-button__text"])[12]
+
+    #select travel end date
+    Click Element       (//*[@aria-label="Calendar"])[2]
+    Click Element       (//*[@class="sapcnqr-calendar__day-text sapcnqr-calendar__day-number sapcnqr-button__text"])[26]
+
+    #select travelling country
+    Click Element       //*[@aria-label="Region Filter"]
+    sleep   3s
+    Scroll Element Into View   //*[@class="sapcnqr-popper sapcnqr-overlay sapcnqr-select-popover-field__dropdown"]
+    Click Element       //*[text()='150 Mile House, British Columbia']
+
+    #fill cash amount
+    Input Text  //*[@name="requestAmount"]   100000
+
+    #fill purpose
+    Input Text  //*[@name="purpose"]   Attended a client meeting in Chennai on 11 to 25 july, 2025.Incurred travel and accommodation expenses as per company policy.Requesting reimbursement for flight, hotel, and local transport.
+
+    #click on cancle
+    sleep   3s
+    Scroll Element Into View    //*[text()='Cancel']
+    Click Element       //*[text()='Cancel']
+    Click Element       //*[@class="sapcnqr-button__text" and text()='No']
+
+    #go to home page
+    Click Element   //*[text()='Home']
+
+    #Close Tab
+    Close Window
+
+    #Close Browser
+    Close Browser
